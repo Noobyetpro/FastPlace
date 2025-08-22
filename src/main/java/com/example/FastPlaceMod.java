@@ -19,7 +19,7 @@ public class FastPlaceMod implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        LOGGER.info("[FastPlace] Mod wird initialisiert");
+        LOGGER.info("[FastPlace] Initialized mod");
 
         fastPlaceToggle = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.fastplace.toggle",
@@ -31,16 +31,16 @@ public class FastPlaceMod implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (fastPlaceToggle.wasPressed()) {
                 fastPlaceEnabled = !fastPlaceEnabled;
-                LOGGER.info("[FastPlace] Status geändert: {}", fastPlaceEnabled);
+                LOGGER.info("[FastPlace] Status changed: {}", fastPlaceEnabled);
 
                 if (client.player != null) {
-                    String status = fastPlaceEnabled ? "§aAN" : "§cAUS";
+                    String status = fastPlaceEnabled ? "§aON" : "§cOFF";
                     client.player.sendMessage(Text.literal("§6[FastPlace]§r " + status), true);
                 }
             }
         });
 
-        LOGGER.info("[FastPlace] Mod erfolgreich initialisiert");
+        LOGGER.info("[FastPlace] Mod successfully loaded");
     }
 
     public static boolean isFastPlaceEnabled() {
