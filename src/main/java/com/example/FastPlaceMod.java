@@ -3,6 +3,8 @@ package com.example;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 public class FastPlaceMod implements ClientModInitializer {
     public static final String MOD_ID = "fastplace";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    private static boolean showStatusMessage = true;
 
     private static KeyBinding fastPlaceToggle;
     private static boolean fastPlaceEnabled = false;
@@ -28,12 +31,31 @@ public class FastPlaceMod implements ClientModInitializer {
                 "category.fastplace"
         ));
 
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+            dispatcher.register(ClientCommandManager.literal("fastplace")
+                    .then(ClientCommandManager.literal("logs")
+                            .then(ClientCommandManager.literal("on")
+                                    .executes(context -> {
+                                        showStatusMessage = true;
+                                        context.getSource().sendFeedback(Text.literal("FastPlace Logs activated"));
+                                        return 1;
+                                    }))
+                            .then(ClientCommandManager.literal("off")
+                                    .executes(context -> {
+                                        showStatusMessage = false;
+                                        context.getSource().sendFeedback(Text.literal("FastPlace Logs deactivated"));
+                                        return 1;
+                                    }))
+                    )
+            );
+        });
+
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (fastPlaceToggle.wasPressed()) {
                 fastPlaceEnabled = !fastPlaceEnabled;
                 LOGGER.info("[FastPlace] Status changed: {}", fastPlaceEnabled);
 
-                if (client.player != null) {
+                if (client.player != null && showStatusMessage) {
                     String status = fastPlaceEnabled ? "§aON" : "§cOFF";
                     client.player.sendMessage(Text.literal("§6[FastPlace]§r " + status), true);
                 }

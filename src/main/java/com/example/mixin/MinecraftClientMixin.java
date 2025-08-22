@@ -1,5 +1,6 @@
 package com.example.mixin;
 
+import com.example.FastPlaceMod;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,6 +14,8 @@ public class MinecraftClientMixin {
 
     @Inject(at = @At("HEAD"), method = "tick")
     private void tick(CallbackInfo info) {
-        itemUseCooldown = 0;
+        if (FastPlaceMod.isFastPlaceEnabled()) {
+            itemUseCooldown = 0;
+        }
     }
 }
