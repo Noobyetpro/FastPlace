@@ -15,7 +15,11 @@ public class MinecraftClientMixin {
     @Inject(at = @At("HEAD"), method = "tick")
     private void tick(CallbackInfo info) {
         if (FastPlaceMod.isFastPlaceEnabled()) {
-            itemUseCooldown = 0;
+            if (FastPlaceMod.shouldBreakPattern()) {
+                itemUseCooldown = Math.min(itemUseCooldown, 3);
+            } else {
+                itemUseCooldown = FastPlaceMod.getStealthDelay();
+            }
         }
     }
 }
