@@ -20,6 +20,6 @@ public class MinecraftClientMixin {
             } else {
                 itemUseCooldown = FastPlaceMod.getStealthDelay();
             }
-        }
+        } 
     }
 }
