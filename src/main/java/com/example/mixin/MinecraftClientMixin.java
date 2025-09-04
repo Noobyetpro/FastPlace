@@ -10,16 +10,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-    @Shadow private int itemUseCooldown;
+    @Shadow
+    private int itemUseCooldown;
 
-    @Inject(at = @At("HEAD"), method = "tick")
-    private void tick(CallbackInfo info) {
-        if (FastPlaceMod.isFastPlaceEnabled()) {
-            if (FastPlaceMod.shouldBreakPattern()) {
-                itemUseCooldown = Math.min(itemUseCooldown, 3);
-            } else {
-                itemUseCooldown = FastPlaceMod.getStealthDelay();
-            }
-        } 
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void onTick(CallbackInfo ci) {
+        if (FastPlaceMod.shouldBreakPattern()) {
+            this.itemUseCooldown = Math.max(0, this.itemUseCooldown - 5);
+        } else {
+            this.itemUseCooldown = Math.max(0, this.itemUseCooldown - (6 + FastPlaceMod.getStealthDelay()));
     }
-}
+}}
