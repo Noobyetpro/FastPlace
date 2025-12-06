@@ -15,10 +15,14 @@ public class MinecraftClientMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
+        if (!FastPlaceMod.isFastPlaceEnabled()) {
+            return;
+        }
+
         if (FastPlaceMod.shouldBreakPattern()) {
             this.itemUseCooldown = Math.max(0, this.itemUseCooldown - 5);
-        } else {
-            this.itemUseCooldown = Math.max(0, this.itemUseCooldown - (6 + FastPlaceMod.getStealthDelay()));
+        } else if (FastPlaceMod.shouldApplyThisTick()) {
+            this.itemUseCooldown = Math.max(0, this.itemUseCooldown - FastPlaceMod.getDynamicReduction());
         }
     }
 }

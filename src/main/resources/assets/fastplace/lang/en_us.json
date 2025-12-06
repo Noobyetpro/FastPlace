@@ -1,0 +1,7 @@
+{
+  "key.fastplace.toggle": "Toggle FastPlace",
+  "category.fastplace": "FastPlace",
+  "command.fastplace.logs.on": "FastPlace messages enabled",
+  "command.fastplace.logs.off": "FastPlace messages disabled",
+  "command.fastplace.logs.usage": "Usage: /fastplace logs <on|off>"
+}

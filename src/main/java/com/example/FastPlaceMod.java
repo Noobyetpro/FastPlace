@@ -23,6 +23,8 @@ public class FastPlaceMod implements ClientModInitializer {
     private static boolean fastPlaceEnabled = false;
     private static boolean showMessages = true;
     private static final Random random = new Random();
+    private static final int MIN_CPS = 17;
+    private static final int MAX_CPS = 21;
     private static int tickCounter = 0;
 
     @Override
@@ -96,5 +98,15 @@ public class FastPlaceMod implements ClientModInitializer {
 
     public static boolean shouldBreakPattern() {
         return tickCounter % 337 == 0;
+    }
+
+    public static boolean shouldApplyThisTick() {
+        int targetCps = MIN_CPS + random.nextInt((MAX_CPS - MIN_CPS) + 1);
+        double chance = Math.min(1.0, targetCps / 20.0);
+        return random.nextDouble() < chance;
+    }
+
+    public static int getDynamicReduction() {
+        return 6 + getStealthDelay();
     }
 }
