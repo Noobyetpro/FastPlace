@@ -23,10 +23,10 @@
 		"fastplace.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.15.11",
-		"minecraft": "=1.21.1",
-		"java": ">=17",
-		"fabric-api": ">=0.115.6"
+		"fabricloader": ">=0.18.1",
+		"minecraft": "=1.21.4",
+		"java": ">=21",
+		"fabric-api": ">=0.119.2+1.21.4"
 	},
 	"suggests": {
 		"another-mod": "*"

@@ -19,5 +19,6 @@ public class MinecraftClientMixin {
             this.itemUseCooldown = Math.max(0, this.itemUseCooldown - 5);
         } else {
             this.itemUseCooldown = Math.max(0, this.itemUseCooldown - (6 + FastPlaceMod.getStealthDelay()));
+        }
     }
-}}
+}
